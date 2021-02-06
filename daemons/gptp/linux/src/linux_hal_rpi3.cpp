@@ -1,29 +1,29 @@
 /*
  * Copyright (C) 2017 Art and Logic.
  *
- *  Redistribution and use in source and binary forms, with or without 
+ *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions are met:
  *
- *   1. Redistributions of source code must retain the above copyright notice, 
+ *   1. Redistributions of source code must retain the above copyright notice,
  *      this list of conditions and the following disclaimer.
  *
- *   2. Redistributions in binary form must reproduce the above copyright 
- *      notice, this list of conditions and the following disclaimer in the 
+ *   2. Redistributions in binary form must reproduce the above copyright
+ *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
  *
- *   3. Neither the name of Art and Logic nor the names of its 
- *      contributors may be used to endorse or promote products derived from 
+ *   3. Neither the name of Art and Logic nor the names of its
+ *      contributors may be used to endorse or promote products derived from
  *      this software without specific prior written permission.
  *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  *
@@ -207,12 +207,15 @@ class AGPioPinger
        fGpioPin(piPinNumber, AGpio::kOut),
        fWaitingToCalc(true)
       {
-         fDebugLogFile.open("gpiopinger.txt", std::ofstream::out);
+      	 // The following looks wrong -- creates a file in an unexpected place
+       	 // and the fDebugLogFile doesn't seem to be used anywhere
+
+         // fDebugLogFile.open("gpiopinger.txt", std::ofstream::out);
       }
 
       ~AGPioPinger()
       {
-         fDebugLogFile.close();
+         // fDebugLogFile.close();
       }
 
       void TimeStamper(LinuxTimestamperGeneric* ts)
@@ -281,7 +284,7 @@ class AGPioPinger
             // {
             //    fWaitingToCalc = true;
             // }
-            
+
 
             // Adjust the pulse rate to be aliggned with the MC adjusted timestamp
             AdjustToTimestamp();
@@ -357,7 +360,7 @@ class AGPioPinger
    int64_t CalculateSleepInterval(int64_t timeStamp) const
    {
       int64_t delta = fNextInterval < timeStamp
-       ? (timeStamp - fNextInterval) / 1000 
+       ? (timeStamp - fNextInterval) / 1000
        : (fNextInterval - timeStamp) / 1000;
       return delta;
    }
@@ -418,7 +421,7 @@ class AGPioPinger
       EtherPort *port = fTimestamper->Port();
       if (fTimestamper != nullptr && port != nullptr)
       {
-         GPTP_LOG_VERBOSE("-------------------------fLastTimestamp:        %" 
+         GPTP_LOG_VERBOSE("-------------------------fLastTimestamp:        %"
           PRIu64, fLastTimestamp);
          if (fWaitingToCalc)
          {
@@ -440,7 +443,7 @@ class AGPioPinger
             else
             {
                int64_t sleepInterval = CalculateSleepInterval(timestamp);
-               
+
 
                high_resolution_clock::time_point now = high_resolution_clock::now();
                auto timeSinceEpoc = now.time_since_epoch();
@@ -497,7 +500,7 @@ class AGPioPinger
       int64_t fLastTimestamp;
       PulseRate fRate;
       int64_t fLastDelta;
-      std::ofstream fDebugLogFile;
+      // std::ofstream fDebugLogFile;
       std::chrono::high_resolution_clock::time_point fLastActivate;
       int64_t fNextInterval;
       AGpio fGpioPin;
