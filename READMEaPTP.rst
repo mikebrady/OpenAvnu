@@ -19,3 +19,12 @@ NOTES:
     An alternative to the use of the unicast_send_nodes ini variable is the use of the address registration message service. This allows other applications to register nodes at run time via socket communication. To use this interface set the ini variable address_registration_socket_port to the desired port number. For more detail about this interface please see addressapi.cpp
 
     Though one can run the RPI build on any linux compatible hardware, the pulse per second interface will only run on the raspberry pi 3. This will set the physical pin number 11 (GPIO17) high once per second.
+
+		An extra flag -- LOGLEVEL -- can be defined to set the level of verbosity of logs if the DLT logging system is not installed. The flag is as follows:
+LOGLEVEL=<log_level>, where <log_level> can be any one of the following (highest to lowest priority): GPTP_LOG_LVL_CRITICAL, GPTP_LOG_LVL_ERROR, GPTP_LOG_LVL_EXCEPTION, GPTP_LOG_LVL_WARNING, GPTP_LOG_LVL_INFO, GPTP_LOG_LVL_STATUS, GPTP_LOG_LVL_DEBUG, GPTP_LOG_LVL_VERBOSE.
+Logs with the same or higher priority (lower priority number) will be logged.
+Example:
+
+ARCH=RPI LOGLEVEL=GPTP_LOG_LVL_CRITICAL make clean all
+
+This will only output the most critical of log messages. However, some diagnostic messages that do not use the logging system are still logged.

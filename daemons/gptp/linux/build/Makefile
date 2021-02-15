@@ -47,7 +47,7 @@ ifeq ($(HAS_PRECISE_TIME),0)
 endif
 
 CPPFLAGS_G = $(CFLAGS_G) -std=c++0x -Wnon-virtual-dtor
-LDFLAGS_G = 
+LDFLAGS_G =
 
 COMMON_DIR = ../../common
 SRC_DIR = ../src
@@ -121,7 +121,7 @@ else ifeq ($(ARCH),RPI)
 		$(SRC_DIR)/addressregisterlistener.hpp \
 		$(SRC_DIR)/addressapi.hpp \
 		$(SRC_DIR)/rawpacket.hpp \
-		$(SRC_DIR)/socket.hpp 
+		$(SRC_DIR)/socket.hpp
 else
 	OBJ_FILES += $(OBJ_DIR)/linux_hal_generic.o \
 		$(OBJ_DIR)/linux_hal_generic_adj.o
@@ -133,6 +133,28 @@ ifeq ($(GENIVI_DLT),1)
 	GENIVI_DLT_LIB_PATH=/usr/local/lib/x86_64-linux-gnu/static/
 	CFLAGS_G += -I$(GENIVI_DLT_INCLUDE_PATH) -DGENIVI_DLT
 	LDFLAGS_G += -ldlt -L$(GENIVI_DLT_LIB_PATH)
+else
+
+#  Add a flag to set the log level if DLT is not being used
+#  If used, only logs that have the same or lower-numbered priority
+#  will be logged. Priority numbers start at zero for the highest
+#  priority and got up for lower priorities.
+#  Added by Mike Brady, February 2021.
+
+
+#  Allowable value for LOGLEVEL are (highest priority first)
+#    GPTP_LOG_LVL_CRITICAL
+#    GPTP_LOG_LVL_ERROR
+#    GPTP_LOG_LVL_EXCEPTION
+#    GPTP_LOG_LVL_WARNING
+#    GPTP_LOG_LVL_INFO
+#    GPTP_LOG_LVL_STATUS
+#    GPTP_LOG_LVL_DEBUG
+#    GPTP_LOG_LVL_VERBOSE
+
+ifdef LOGLEVEL
+	CFLAGS_G += -DLOGLEVEL=$(LOGLEVEL)
+endif
 endif
 
 ifeq ($(SYSTEMD_WATCHDOG),1)

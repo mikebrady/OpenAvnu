@@ -61,29 +61,37 @@ void gptpLog(GPTP_LOG_LEVEL level, const char *tag, const char *path, int line, 
 	char msg[1024];
 
 	std::lock_guard<std::mutex> guard(gLogKeeper);
-	
+
 	va_list args;
 	va_start(args, fmt);
 	vsprintf(msg, fmt, args);
 
 #ifndef GENIVI_DLT
-	std::chrono::system_clock::time_point cNow = std::chrono::system_clock::now();
-	time_t tNow = std::chrono::system_clock::to_time_t(cNow);
-	struct tm tmNow;
-	PLAT_localtime(&tNow, &tmNow);
-	std::chrono::system_clock::duration roundNow = cNow - std::chrono::system_clock::from_time_t(tNow);
-	long int millis = (long int) std::chrono::duration_cast<std::chrono::milliseconds>(roundNow).count();
 
-	if (path) {
-		fprintf(stderr, "%s: GPTP [%2.2d:%2.2d:%2.2d:%3.3ld] [%s:%u] %s\n",
-			   tag, tmNow.tm_hour, tmNow.tm_min, tmNow.tm_sec, millis, path, line, msg);
+#ifdef LOGLEVEL
+	if (level <= LOGLEVEL) {
+#endif
+		std::chrono::system_clock::time_point cNow = std::chrono::system_clock::now();
+		time_t tNow = std::chrono::system_clock::to_time_t(cNow);
+		struct tm tmNow;
+		PLAT_localtime(&tNow, &tmNow);
+		std::chrono::system_clock::duration roundNow = cNow - std::chrono::system_clock::from_time_t(tNow);
+		long int millis = (long int) std::chrono::duration_cast<std::chrono::milliseconds>(roundNow).count();
+
+		if (path) {
+			fprintf(stderr, "%s: GPTP [%2.2d:%2.2d:%2.2d:%3.3ld] [%s:%u] %s\n",
+					 tag, tmNow.tm_hour, tmNow.tm_min, tmNow.tm_sec, millis, path, line, msg);
+		}
+		else {
+			fprintf(stderr, "%s: GPTP [%2.2d:%2.2d:%2.2d:%3.3ld] %s\n",
+					 tag, tmNow.tm_hour, tmNow.tm_min, tmNow.tm_sec, millis, msg);
+		}
+#ifdef LOGLEVEL
 	}
-	else {
-		fprintf(stderr, "%s: GPTP [%2.2d:%2.2d:%2.2d:%3.3ld] %s\n",
-			   tag, tmNow.tm_hour, tmNow.tm_min, tmNow.tm_sec, millis, msg);
-	}
+#endif
+
 #else
-	DltLogLevelType dlt_level; 
+	DltLogLevelType dlt_level;
 
 	switch (level) {
 	case GPTP_LOG_LVL_CRITICAL:
