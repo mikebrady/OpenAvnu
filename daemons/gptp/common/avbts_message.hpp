@@ -1240,10 +1240,10 @@ class PTPMessagePathDelayReq : public PTPMessageCommon {
  private:
 	Timestamp originTimestamp;
 
+ public:
 	PTPMessagePathDelayReq() {
 		return;
 	}
- public:
 	/**
 	 * @brief Destroys the PTPMessagePathDelayReq object
 	 */
@@ -1311,9 +1311,9 @@ private:
 	std::shared_ptr<PortIdentity> requestingPortIdentity;
 	Timestamp requestReceiptTimestamp;
 
+public:
 	PTPMessagePathDelayResp(void) {
 	}
-public:
 	/**
 	 * @brief Destroys the PTPMessagePathDelayResp object
 	 */
@@ -1403,9 +1403,9 @@ class PTPMessagePathDelayRespFollowUp:public PTPMessageCommon {
 	Timestamp responseOriginTimestamp;
 	std::shared_ptr<PortIdentity> requestingPortIdentity;
 
+public:
 	PTPMessagePathDelayRespFollowUp(void) { }
 
-public:
 	/**
 	 * @brief Builds the PTPMessagePathDelayRespFollowUp object
 	 */

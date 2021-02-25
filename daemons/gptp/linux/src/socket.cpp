@@ -234,8 +234,8 @@ bool ASocket::ReceiveData(ARawPacket& data, std::mutex& keeper)
 
    struct msghdr msg;
 	struct {
-		struct cmsghdr cm;
 		char control[256];
+		struct cmsghdr cm;
 	} control;
 
 	struct sockaddr_storage remoteAddress;

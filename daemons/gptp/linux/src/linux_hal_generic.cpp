@@ -106,8 +106,8 @@ net_result LinuxNetworkInterface::receive(LinkLayerAddress *addr, uint8_t *paylo
 	struct msghdr msg;
 	struct cmsghdr *cmsg;
 	struct {
-		struct cmsghdr cm;
 		char control[256];
+		struct cmsghdr cm;
 	} control;
 
 	struct sockaddr_storage remoteAddress;
@@ -527,8 +527,8 @@ int LinuxTimestamperGeneric::HWTimestamper_txtimestamp
 	struct sockaddr_ll remote;
 	struct iovec sgentry;
 	struct {
-		struct cmsghdr cm;
 		char control[256];
+		struct cmsghdr cm;
 	} control;
   
     if( sd == -1 ) return -1;

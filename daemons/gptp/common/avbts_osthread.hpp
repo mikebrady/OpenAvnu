@@ -84,10 +84,10 @@ public:
 	 * @brief Creates a new thread
 	 * @return Pointer to OSThread object
 	 */
-	virtual OSThread * createThread() const = 0;
+	virtual OSThread * createThread() const {return NULL;};
 
 #ifdef RPI
-	virtual std::shared_ptr<OSThread> create() const = 0;
+	virtual std::shared_ptr<OSThread> create() const {return NULL;};
 #endif	
 
 	/**
