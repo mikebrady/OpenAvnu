@@ -63,7 +63,7 @@ void AAddressRegisterListener::ProcessData(ARawPacket& data)
 	AAddressMessage msg(data);
 	//msg.DebugLog();
 	const int kKind = msg.Type();
-	if (kKind != AddressApiAdd && kKind != AddressApiDelete)
+	if (kKind != AddressApiAdd && kKind != AddressApiDelete && kKind != AddressApiAddUniquely && kKind != AddressApiDeleteAll)
 	{
 		std::string msg = "Invalid address api message type "
 		 + std::to_string(kKind) + ".";
@@ -77,6 +77,9 @@ void AAddressRegisterListener::ProcessData(ARawPacket& data)
 	// delegated to each class instance.
 	static std::map<int, std::shared_ptr<AAddressMessage> > mapper = {
 		{AddressApiAdd, std::make_shared<AAddAddressMessage>()},
+		{AddressApiAddUniquely, std::make_shared<AAddAddressUniquelyMessage>()},
+		{AddressApiDeleteAll, std::make_shared<ADeleteAllAddressMessage>()},
+		{AddressApiListAll, std::make_shared<AListAllAddressMessage>()},
 		{AddressApiDelete, std::make_shared<ADeleteAddressMessage>()}
 	};
 	mapper[kKind]->Process(msg, fPtpPort);

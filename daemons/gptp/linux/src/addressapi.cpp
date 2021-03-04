@@ -150,6 +150,36 @@ void AAddressMessage::DebugLog()
 
 //-----------------------------------------------------------------------------
 
+AAddAddressUniquelyMessage::AAddAddressUniquelyMessage()
+{
+	fType = AddressApiAddUniquely;
+}
+
+AAddAddressUniquelyMessage::AAddAddressUniquelyMessage(const ARawPacket& data) :
+ AAddressMessage(data)
+{
+	if (fType != AddressApiAddUniquely)
+	{
+		std::string msg = "Invalid message type in packet.";
+		GPTP_LOG_ERROR(msg.c_str());
+		//std::cerr << msg << std::endl;
+		throw(std::runtime_error(msg));
+	}
+}
+
+AAddAddressUniquelyMessage::~AAddAddressUniquelyMessage()
+{}
+
+void AAddAddressUniquelyMessage::Process(const AAddressMessage& data, EtherPort *port)
+{
+	if (port != nullptr)
+	{
+		port->AddUnicastSendNode(data.Address());
+	}
+}
+
+//-----------------------------------------------------------------------------
+
 AAddAddressMessage::AAddAddressMessage()
 {
 	fType = AddressApiAdd;
@@ -207,3 +237,65 @@ void ADeleteAddressMessage::Process(const AAddressMessage& data, EtherPort *port
 		port->DeleteUnicastSendNode(data.Address());
 	}
 }
+
+//-----------------------------------------------------------------------------
+
+ADeleteAllAddressMessage::ADeleteAllAddressMessage()
+{
+	fType = AddressApiDeleteAll;
+}
+
+ADeleteAllAddressMessage::ADeleteAllAddressMessage(const ARawPacket& data) :
+ AAddressMessage(data)
+{
+	if (fType != AddressApiDeleteAll)
+	{
+		std::string msg = "Invalid message type in packet.";
+		GPTP_LOG_ERROR(msg.c_str());
+		//std::cerr << msg << std::endl;
+		throw(std::runtime_error(msg));
+	}
+}
+
+ADeleteAllAddressMessage::~ADeleteAllAddressMessage()
+{}
+
+void ADeleteAllAddressMessage::Process(const AAddressMessage& data, EtherPort *port)
+{
+	if (port != nullptr)
+	{
+		port->DeleteAllUnicastSendNodes();
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+AListAllAddressMessage::AListAllAddressMessage()
+{
+	fType = AddressApiListAll;
+}
+
+AListAllAddressMessage::AListAllAddressMessage(const ARawPacket& data) :
+ AAddressMessage(data)
+{
+	if (fType != AddressApiListAll)
+	{
+		std::string msg = "Invalid message type in packet.";
+		GPTP_LOG_ERROR(msg.c_str());
+		//std::cerr << msg << std::endl;
+		throw(std::runtime_error(msg));
+	}
+}
+
+AListAllAddressMessage::~AListAllAddressMessage()
+{}
+
+void AListAllAddressMessage::Process(const AAddressMessage& data, EtherPort *port)
+{
+	if (port != nullptr)
+	{
+		port->DumpUnicastSendNodes();
+	}
+}
+
+

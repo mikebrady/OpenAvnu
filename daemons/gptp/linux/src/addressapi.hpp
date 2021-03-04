@@ -37,7 +37,7 @@
 #include "rawpacket.hpp"
 #include "../../common/ether_port.hpp"
 
-enum AddressApiMessageTypes {AddressApiAdd = 1, AddressApiDelete};
+enum AddressApiMessageTypes {AddressApiAdd = 1, AddressApiDelete, AddressApiAddUniquely, AddressApiDeleteAll, AddressApiListAll};
 
 class AAddressMessage
 {
@@ -73,12 +73,45 @@ class AAddAddressMessage : public AAddressMessage
 		virtual void Process(const AAddressMessage& data, EtherPort *port);
 };
 
+class AAddAddressUniquelyMessage : public AAddressMessage
+{
+	public:
+		AAddAddressUniquelyMessage();
+		AAddAddressUniquelyMessage(const ARawPacket& data);
+		virtual ~AAddAddressUniquelyMessage();
+
+	public:
+		virtual void Process(const AAddressMessage& data, EtherPort *port);
+};
+
 class ADeleteAddressMessage : public AAddressMessage
 {
 	public:
 		ADeleteAddressMessage();
 		ADeleteAddressMessage(const ARawPacket& data);
 		virtual ~ADeleteAddressMessage();
+
+	public:
+		virtual void Process(const AAddressMessage& data, EtherPort *port);
+};
+
+class ADeleteAllAddressMessage : public AAddressMessage
+{
+	public:
+		ADeleteAllAddressMessage();
+		ADeleteAllAddressMessage(const ARawPacket& data);
+		virtual ~ADeleteAllAddressMessage();
+
+	public:
+		virtual void Process(const AAddressMessage& data, EtherPort *port);
+};
+
+class AListAllAddressMessage : public AAddressMessage
+{
+	public:
+		AListAllAddressMessage();
+		AListAllAddressMessage(const ARawPacket& data);
+		virtual ~AListAllAddressMessage();
 
 	public:
 		virtual void Process(const AAddressMessage& data, EtherPort *port);

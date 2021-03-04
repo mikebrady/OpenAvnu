@@ -1405,7 +1405,7 @@ public:
 	{
 		std::for_each(fUnicastSendNodeList.begin(), fUnicastSendNodeList.end(), [](const std::string& adr)
 		 {
-		 	 GPTP_LOG_VERBOSE("UnicastSendNode: %s", adr.c_str());
+		 	 GPTP_LOG_DEBUG("UnicastSendNode: %s", adr.c_str());
 		 });
 	}
 
@@ -1423,6 +1423,15 @@ public:
 			fUnicastSendNodeList.erase(it);
 		}
 	}
+	
+	void DeleteAllUnicastSendNodes()
+	{
+		for (auto it = fUnicastSendNodeList.begin(); it != fUnicastSendNodeList.end(); it++)
+		{
+			fUnicastSendNodeList.erase(it);
+		}
+	}
+
 
 	void UnicastSendNodes(const std::list<std::string>& nodeList)
 	{
