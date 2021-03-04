@@ -1414,6 +1414,18 @@ public:
 		fUnicastSendNodeList.push_back(address);
 	}
 
+void AddUniqueUnicastSendNode(const std::string& address)
+	{
+	  // add it only if it's not already there
+	  auto it = std::find(fUnicastSendNodeList.begin(),
+		 fUnicastSendNodeList.end(), address);
+		if (it == fUnicastSendNodeList.end())
+		{
+			fUnicastSendNodeList.push_back(address);
+		}
+		
+	}
+
 	void DeleteUnicastSendNode(const std::string& address)
 	{
 		auto it = std::find(fUnicastSendNodeList.begin(),

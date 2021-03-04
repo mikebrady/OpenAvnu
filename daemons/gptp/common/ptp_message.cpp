@@ -526,7 +526,7 @@ std::shared_ptr<PTPMessageCommon> buildPTPMessage
 		steady_clock::time_point curSync = steady_clock::now();
 		duration<double> timeSpan = duration_cast<duration<double>>(curSync - lastSync);
 		lastSync = curSync;
-		GPTP_LOG_INFO("Sync delta: %f", timeSpan.count());
+		GPTP_LOG_VERBOSE("Sync delta: %f", timeSpan.count());
 
 		// Be sure buffer is the correction size
 		if (size < PTP_COMMON_HDR_LENGTH + PTP_SYNC_LENGTH) {

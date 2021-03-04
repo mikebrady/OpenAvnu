@@ -174,7 +174,7 @@ void AAddAddressUniquelyMessage::Process(const AAddressMessage& data, EtherPort 
 {
 	if (port != nullptr)
 	{
-		port->AddUnicastSendNode(data.Address());
+		port->AddUniqueUnicastSendNode(data.Address());
 	}
 }
 
