@@ -1403,10 +1403,12 @@ public:
 
 	void DumpUnicastSendNodes()
 	{
+	  GPTP_LOG_INFO("UnicastSendNodes -- start");
 		std::for_each(fUnicastSendNodeList.begin(), fUnicastSendNodeList.end(), [](const std::string& adr)
 		 {
-		 	 GPTP_LOG_DEBUG("UnicastSendNode: %s", adr.c_str());
+		 	 GPTP_LOG_INFO("UnicastSendNode: %s", adr.c_str());
 		 });
+	  GPTP_LOG_INFO("UnicastSendNodes -- end");
 	}
 
 	void AddUnicastSendNode(const std::string& address)
@@ -1416,6 +1418,7 @@ public:
 
 void AddUniqueUnicastSendNode(const std::string& address)
 	{
+	  // GPTP_LOG_INFO("AddUniqueUnicastSendNode \"%s\"", address.c_str());
 	  // add it only if it's not already there
 	  auto it = std::find(fUnicastSendNodeList.begin(),
 		 fUnicastSendNodeList.end(), address);
@@ -1438,10 +1441,8 @@ void AddUniqueUnicastSendNode(const std::string& address)
 	
 	void DeleteAllUnicastSendNodes()
 	{
-		for (auto it = fUnicastSendNodeList.begin(); it != fUnicastSendNodeList.end(); it++)
-		{
-			fUnicastSendNodeList.erase(it);
-		}
+	  // GPTP_LOG_INFO("DeleteAllUnicastSendNodes");
+		fUnicastSendNodeList.clear();
 	}
 
 

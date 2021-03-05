@@ -63,7 +63,7 @@ void AAddressRegisterListener::ProcessData(ARawPacket& data)
 	AAddressMessage msg(data);
 	//msg.DebugLog();
 	const int kKind = msg.Type();
-	if (kKind != AddressApiAdd && kKind != AddressApiDelete && kKind != AddressApiAddUniquely && kKind != AddressApiDeleteAll)
+	if (kKind != AddressApiAdd && kKind != AddressApiDelete && kKind != AddressApiAddUniquely && kKind != AddressApiDeleteAll && kKind != AddressApiListAll)
 	{
 		std::string msg = "Invalid address api message type "
 		 + std::to_string(kKind) + ".";
