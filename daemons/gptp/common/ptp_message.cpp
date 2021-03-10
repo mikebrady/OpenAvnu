@@ -1684,10 +1684,17 @@ void PTPMessageFollowUp::processMessage(EtherPort *port)
 		 *sync_id != *sourcePortIdentity))
 		{
 	#ifdef APTP
-			GPTP_LOG_ERROR("Received Follow Up that didn't match the sync message.\n"
-			 "sync.seqId:%d followup.seqId:%d", sync->getSequenceId(), sequenceId);
-			GPTP_LOG_ERROR("       Sync clock id:%s",  sync_id->getClockIdentity().getIdentityString().c_str());
-			GPTP_LOG_ERROR("source Port Identity:%s",  sourcePortIdentity->getClockIdentity().getIdentityString().c_str());
+			GPTP_LOG_VERBOSE("Sync Message %d and Follow-Up %d don't match.", sync->getSequenceId(), sequenceId);
+			//GPTP_LOG_ERROR("Received Follow Up that didn't match the sync message.\n"
+			// "sync.seqId:%d followup.seqId:%d", sync->getSequenceId(), sequenceId);
+			uint16_t spn;
+			sync_id->getPortNumber(&spn);
+			GPTP_LOG_VERBOSE("              Sync Clock ID:%s, Port: %u",  sync_id->getClockIdentity().getIdentityString().c_str(), spn);
+			uint16_t sopn;
+			sourcePortIdentity->getPortNumber(&sopn);
+			GPTP_LOG_VERBOSE("       Source Port Clock ID:%s, Port: %u",  sourcePortIdentity->getClockIdentity().getIdentityString().c_str(), sopn);
+			//GPTP_LOG_ERROR("       Sync clock id:%s",  sync_id->getClockIdentity().getIdentityString().c_str());
+			//GPTP_LOG_ERROR("source Port Identity:%s",  sourcePortIdentity->getClockIdentity().getIdentityString().c_str());
 	#else
 			unsigned int cnt = 0;
 
@@ -1703,6 +1710,7 @@ void PTPMessageFollowUp::processMessage(EtherPort *port)
 		}
 		else
 		{
+			GPTP_LOG_VERBOSE("Sync Message %d and Follow-Up %d do match!", sync->getSequenceId(), sequenceId);
 			ok = ComputeFrequencies(port, false);
 		}
 	}
@@ -1799,6 +1807,8 @@ bool PTPMessageFollowUp::ComputeFrequencies(EtherPort * port)
 	//
 		GPTP_LOG_ERROR("Error getting link delay.");
 		return ok;
+	} else {
+		GPTP_LOG_INFO("No error getting link delay.");
 	}
 
 	master_local_freq_offset  =  tlv.getRateOffset();
@@ -2946,9 +2956,9 @@ void PTPMessageSignalling::processMessage( EtherPort *port )
 {
 	GPTP_LOG_VERBOSE("PTPMessageSignalling::processMessage");
 
-	GPTP_LOG_STATUS("Signalling Link Delay Interval: %d", tlv.getLinkDelayInterval());
-	GPTP_LOG_STATUS("Signalling Sync Interval: %d", tlv.getTimeSyncInterval());
-	GPTP_LOG_STATUS("Signalling Announce Interval: %d", tlv.getAnnounceInterval());
+	GPTP_LOG_VERBOSE("Signalling Link Delay Interval: %d", tlv.getLinkDelayInterval());
+	GPTP_LOG_VERBOSE("Signalling Sync Interval: %d", tlv.getTimeSyncInterval());
+	GPTP_LOG_VERBOSE("Signalling Announce Interval: %d", tlv.getAnnounceInterval());
 
 #ifndef APTP
 	long long unsigned int waitTime;

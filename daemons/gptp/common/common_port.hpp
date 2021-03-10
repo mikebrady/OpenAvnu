@@ -346,12 +346,12 @@ struct ALastTimestampKeeper
 {
 	ALastTimestampKeeper(uint64_t t1, uint64_t t2, uint64_t t3, uint64_t t4) :
 	 fT1(t1), fT2(t2), fT3(t3), fT4(t4)
-	{		
+	{
 	}
 
 	ALastTimestampKeeper() :
 	 fT1(0), fT2(0), fT3(0), fT4(0)
-	{		
+	{
 	}
 
 	uint64_t fT1;
@@ -360,7 +360,7 @@ struct ALastTimestampKeeper
 	uint64_t fT4;
 };
 
-namespace std 
+namespace std
 {
 	class mutex;
 }
@@ -1426,22 +1426,24 @@ void AddUniqueUnicastSendNode(const std::string& address)
 		{
 			fUnicastSendNodeList.push_back(address);
 		}
-		
+
 	}
 
 	void DeleteUnicastSendNode(const std::string& address)
 	{
+		GPTP_LOG_INFO("DeleteUnicastSendNode -- attempt \"%s\"", address.c_str());
 		auto it = std::find(fUnicastSendNodeList.begin(),
 		 fUnicastSendNodeList.end(), address);
 		if (it != fUnicastSendNodeList.end())
 		{
+			GPTP_LOG_INFO("DeleteUnicastSendNode -- found \"%s\"", it->c_str());
 			fUnicastSendNodeList.erase(it);
 		}
 	}
-	
+
 	void DeleteAllUnicastSendNodes()
 	{
-	  // GPTP_LOG_INFO("DeleteAllUnicastSendNodes");
+	  GPTP_LOG_INFO("DeleteAllUnicastSendNodes");
 		fUnicastSendNodeList.clear();
 	}
 

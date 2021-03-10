@@ -175,6 +175,19 @@ private:
 
 public:
   /**
+   * @brief Update grandmaster_clock_identity on the IPC connection
+   * @param asks the IPC object to   update
+   */
+
+	void update_grandmaster() {
+		if (ipc != NULL) {
+			uint8_t grandmaster_id[PTP_CLOCK_IDENTITY_LENGTH];
+			ipc->update_grandmaster(
+				grandmaster_id, domain_number);
+		}
+	}
+
+  /**
    * @brief Instantiates a IEEE 1588 Clock
    * @param forceOrdinarySlave Forces it to be an ordinary slave
    * @param syntonize if TRUE, clock will syntonize to the master clock
@@ -184,7 +197,7 @@ public:
    * @param lock_factory [in] Provides a factory object for creating locking a locking mechanism
    */
   IEEE1588Clock
-	  (bool forceOrdinarySlave, bool syntonize, 
+	  (bool forceOrdinarySlave, bool syntonize,
       uint8_t priority1, uint8_t priority2, uint8_t accuracy,
 	   OSTimerQueueFactory * timerq_factory, OS_IPC * ipc,
 	   OSLockFactory *lock_factory );
@@ -295,6 +308,7 @@ public:
 	  if (id != grandmaster_clock_identity) {
 		  GPTP_LOG_STATUS("New Grandmaster \"%s\" (previous \"%s\")", id.getIdentityString().c_str(), grandmaster_clock_identity.getIdentityString().c_str());
 		  grandmaster_clock_identity = id;
+		  update_grandmaster();
 	  }
   }
 
