@@ -1805,10 +1805,10 @@ bool PTPMessageFollowUp::ComputeFrequencies(EtherPort * port)
 	if( !port->getLinkDelay(&delay) )
 	{
 	//
-		GPTP_LOG_ERROR("Error getting link delay.");
+		GPTP_LOG_DEBUG("Error getting link delay.");
 		return ok;
 	} else {
-		GPTP_LOG_INFO("No error getting link delay.");
+		// GPTP_LOG_INFO("No error getting link delay.");
 	}
 
 	master_local_freq_offset  =  tlv.getRateOffset();
